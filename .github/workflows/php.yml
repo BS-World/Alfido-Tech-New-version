@@ -16,29 +16,9 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'  # Specify the PHP version you need
-        extensions: mbstring, intl, pdo, pdo_mysql  # Optional PHP extensions
-        tools: composer  # Install Composer for managing dependencies
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+        php-version: '8.0.30'
 
     - name: Deploy to Server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Use GitHub Secrets for your private key
-        SERVER_IP: ${{ secrets.SERVER_IP }}  # Use GitHub Secrets for your server IP
-        USERNAME: ${{ secrets.USERNAME }}  # Use GitHub Secrets for your server username
       run: |
         echo "Deploying to server..."
-        # Start by adding the private key for SSH
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
-        
-        # Deploying to your server via SSH
-        scp -i private_key.pem -o StrictHostKeyChecking=no -r ./path/to/your/site/* $USERNAME@$SERVER_IP:/path/on/server/
-
-        # Optional: Restart your web server
-        ssh -i private_key.pem -o StrictHostKeyChecking=no $USERNAME@$SERVER_IP "sudo systemctl restart apache2"  # Change to your web server service if needed
-
-        # Clean up the private key
-        rm private_key.pem
+        # Add your deployment script here
