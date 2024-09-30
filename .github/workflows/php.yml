@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +21,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'  # Change to PHP 8.0.30 if you want to match your local environment
+        php-version: '8.0'  # Specify the PHP version you need
         extensions: mbstring, intl, pdo, pdo_mysql  # Add more extensions if needed
         coverage: none  # Disable coverage tool if not needed
         tools: composer  # Installs Composer along with PHP
