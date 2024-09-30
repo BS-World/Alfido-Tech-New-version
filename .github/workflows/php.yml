@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP Composer Workflow
 
 on:
   push:
@@ -15,18 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the repository code
     - uses: actions/checkout@v4
 
-    # Setup PHP environment
-    - name: Set up PHP
+    # Step 2: Install PHP using shivammathur/setup-php
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0.30'  # Specify the PHP version you need
-        tools: composer
+        php-version: '8.0'  # Change to PHP 8.0.30 if you want to match your local environment
+        extensions: mbstring, intl, pdo, pdo_mysql  # Add more extensions if needed
+        coverage: none  # Disable coverage tool if not needed
+        tools: composer  # Installs Composer along with PHP
 
+    # Step 3: Validate composer.json and composer.lock
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
+    # Step 4: Cache Composer dependencies to optimize subsequent builds
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
@@ -36,9 +41,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
+    # Step 5: Install Composer dependencies
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    # Run your test suite if you have one
+    # Step 6: Run your test suite if applicable
     - name: Run test suite
       run: composer run-script test
