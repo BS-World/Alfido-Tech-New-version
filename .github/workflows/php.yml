@@ -1,49 +1,24 @@
-name: PHP Composer Workflow
+name: Deploy PHP Website
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the repository code
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    # Step 2: Install PHP using shivammathur/setup-php
-    - name: Setup PHP
+    - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'  # Specify the PHP version you need
-        extensions: mbstring, intl, pdo, pdo_mysql  # Add more extensions if needed
-        coverage: none  # Disable coverage tool if not needed
-        tools: composer  # Installs Composer along with PHP
+        php-version: '8.0.30'
 
-    # Step 3: Validate composer.json and composer.lock
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
-    # Step 4: Cache Composer dependencies to optimize subsequent builds
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-
-    # Step 5: Install Composer dependencies
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-
-    # Step 6: Run your test suite if applicable
-    - name: Run test suite
-      run: composer run-script test
+    - name: Deploy to Server
+      run: |
+        echo "Deploying to server..."
+        # Add your deployment script here
