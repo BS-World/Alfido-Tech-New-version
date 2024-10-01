@@ -1,4 +1,4 @@
-Here's a sample README file for the **Alfido Tech PHP Website** project:
+
 
 ---
 
@@ -108,4 +108,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Feel free to adjust or extend this README based on your project's specific requirements!
