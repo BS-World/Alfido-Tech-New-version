@@ -1,0 +1,30 @@
+name: 'Dependency review'
+on:
+  pull_request:
+    branches: [ "main", "develop" ]  # Adding additional branch
+
+permissions:
+  contents: write  # Updated permissions to write for contents
+  pull-requests: write  # Allow PR write to add comments
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
+
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          comment-summary-in-pr: always  # Always comment the summary in the PR
+          fail-on-severity: moderate  # Block PRs with moderate or higher severity vulnerabilities
+          deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later  # Deny specific licenses that are not allowed
+          retry-on-snapshot-warnings: true  # Retry on snapshot warnings to avoid unnecessary failures
+
+      - name: 'Send Slack Notification'  # Optional step to notify via Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: '{"text":"Dependency review completed. Check PR comments for details."}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Secret for Slack Webhook URL
